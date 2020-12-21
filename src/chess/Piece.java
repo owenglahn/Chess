@@ -12,7 +12,7 @@ public abstract class Piece {
 	/*
 	 * Pieces can be removed, but not added or changed.
 	 * 
-	 * Switch statement antipattern. However, this is a controlled setting, no issues with 
+	 * Switch statement antipattern. However, this is a controlled setting (no user input), no issues with 
 	 * code fragility.
 	 */
 	public static final List<Piece> PIECES = new ArrayList<Piece>();
