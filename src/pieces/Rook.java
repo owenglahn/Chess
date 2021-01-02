@@ -1,5 +1,7 @@
 package pieces;
 
+import board.*;
+
 public class Rook extends Piece
 {
 

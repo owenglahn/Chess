@@ -5,64 +5,30 @@ import java.util.*;
 import gui.BoardObserver;
 import pieces.Color;
 import pieces.Piece;
-import pieces.Square;
 
 /*
  * Serves as the model in the OBSERVER design pattern.
+ * 
+ * Implements SINGLETON design pattern
  */
 public class Board implements Iterable<Square> {
 
 	// duplicated data
 	private Square[][] aGrid = new Square[8][8];
-	private Map<Square, Optional<Piece>> aPieces = new HashMap<>();
 	private final BoardObserver aObserver = new BoardObserver(this);
-	public static final Board BOARD = new Board(); // singleton
-	{
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				BOARD.aGrid[i][j] = new Square(Color.values()[(i + j) % 2]);
-			}
-		}
-		setBoard();
-	}
+	private static final Board BOARD = new Board(); // singleton
 
 	private Board() {
 	}
-
-	public Optional<Piece> getPiece(Square pSquare) {
-		return aPieces.get(pSquare);
-	}
-
-	public void setPiece(Square pSquare, Piece pPiece) {
-		aPieces.put(pSquare, Optional.ofNullable(pPiece));
+	
+	public static Board instance()
+	{
+		return BOARD;
 	}
 	
 	public Square[][] getGrid()
 	{
 		return aGrid;
-	}
-
-	private void setBoard() {
-		for (int i = 0; i < 8; i++) {
-			aPieces.put(aGrid[1][i], Optional.ofNullable(Piece.WHITE_PAWNS.get(i)));
-			aPieces.put(aGrid[6][i], Optional.ofNullable(Piece.BLACK_PAWNS.get(i)));
-		}
-		aPieces.put(aGrid[0][0], Optional.ofNullable(Piece.WHITE_ROOKS.get(0)));
-		aPieces.put(aGrid[0][7], Optional.ofNullable(Piece.WHITE_ROOKS.get(1)));
-		aPieces.put(aGrid[0][1], Optional.ofNullable(Piece.WHITE_KNIGHTS.get(0)));
-		aPieces.put(aGrid[0][6], Optional.ofNullable(Piece.WHITE_KNIGHTS.get(1)));
-		aPieces.put(aGrid[0][2], Optional.ofNullable(Piece.WHITE_BISHOPS.get(0)));
-		aPieces.put(aGrid[0][5], Optional.ofNullable(Piece.WHITE_BISHOPS.get(1)));
-		aPieces.put(aGrid[0][3], Optional.ofNullable(Piece.WHITE_KING));
-		aPieces.put(aGrid[0][4], Optional.ofNullable(Piece.WHITE_QUEEN));
-		aPieces.put(aGrid[7][0], Optional.ofNullable(Piece.BLACK_ROOKS.get(0)));
-		aPieces.put(aGrid[7][7], Optional.ofNullable(Piece.BLACK_ROOKS.get(1)));
-		aPieces.put(aGrid[7][1], Optional.ofNullable(Piece.BLACK_KNIGHTS.get(0)));
-		aPieces.put(aGrid[7][6], Optional.ofNullable(Piece.BLACK_KNIGHTS.get(1)));
-		aPieces.put(aGrid[7][2], Optional.ofNullable(Piece.BLACK_BISHOPS.get(0)));
-		aPieces.put(aGrid[7][5], Optional.ofNullable(Piece.BLACK_BISHOPS.get(1)));
-		aPieces.put(aGrid[7][3], Optional.ofNullable(Piece.BLACK_KING));
-		aPieces.put(aGrid[7][4], Optional.ofNullable(Piece.BLACK_QUEEN));
 	}
 	
 	/*

@@ -2,7 +2,8 @@ package pieces;
 
 import java.util.*;
 
-import board.Board;
+import board.*;
+import gui.*;
 
 /*
  * Utilize hybrid FLYWEIGHT/SINGLETON design pattern.
@@ -13,6 +14,23 @@ public abstract class Piece {
 	
 	protected final Color aColor;
 	protected int[] aCoords = new int[2];
+	private final PieceView aPieceView = new PieceView(this);
+
+	public static final List<Piece> ALL_PIECES = new ArrayList<>();
+	{
+		ALL_PIECES.addAll(WHITE_PAWNS);
+		ALL_PIECES.addAll(BLACK_PAWNS);
+		ALL_PIECES.addAll(WHITE_ROOKS);
+		ALL_PIECES.addAll(BLACK_ROOKS);
+		ALL_PIECES.addAll(WHITE_KNIGHTS);
+		ALL_PIECES.addAll(BLACK_KNIGHTS);
+		ALL_PIECES.addAll(WHITE_BISHOPS);
+		ALL_PIECES.addAll(BLACK_BISHOPS);
+		ALL_PIECES.add(WHITE_KING);
+		ALL_PIECES.add(BLACK_KING);
+		ALL_PIECES.add(WHITE_QUEEN);
+		ALL_PIECES.add(BLACK_QUEEN);
+	}
 	public static final List<Piece> WHITE_PAWNS = new ArrayList<>();
 	{
 		for (int i = 0; i < 8; i++)
@@ -84,6 +102,11 @@ public abstract class Piece {
 		return aColor;
 	}
 	
+	public PieceView getPieceView()
+	{
+		return aPieceView;
+	}
+	
 	/*
 	 * @pre pRow >= 0, pColumn >= 0
 	 * @post set coordinates to pRow and pColumn
@@ -99,23 +122,22 @@ public abstract class Piece {
 	 */
 	public void move(Square pSquare) 
 	{
-		assert pSquare != null;
-		if (pSquare.isOccupied()) 
-		{
-			Board.BOARD.setPiece(pSquare, this);
-		}
-		aCoords[0] = pSquare.getCoords()[0];
-		aCoords[1] = pSquare.getCoords()[1];
+		
 	}
 	
 	protected boolean isValidMove(Square pSquare)
 	{
-		if (pSquare.isOccupied() && pSquare.getPiece().getColor() == aColor) return false; 
+//		if (pSquare.isOccupied() && pSquare.getPiece().getColor() == aColor) return false; 
 		return (pSquare.getCoords()[0] != aCoords[0] && pSquare.getCoords()[1] != aCoords[1]);
 	}
 	
 	public String getIDString()
 	{
 		return Integer.toString(hashCode());
+	}
+	
+	public boolean colorEquals(Piece pPiece)
+	{
+		return getColor().equals(pPiece.getColor());
 	}
 }

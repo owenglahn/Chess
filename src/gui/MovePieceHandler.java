@@ -7,7 +7,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import pieces.Piece;
-import javafx.event.ActionEvent;
 
 public class MovePieceHandler implements EventHandler<MouseEvent> {
 

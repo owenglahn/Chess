@@ -1,5 +1,7 @@
 package pieces;
 
+import board.*;
+
 public class Queen extends Piece
 {
 	protected Queen(Color pColor)

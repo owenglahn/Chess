@@ -1,5 +1,7 @@
 package pieces;
 
+import board.*;
+
 public class Pawn extends Piece
 {
 	protected Pawn(Color pColor)
