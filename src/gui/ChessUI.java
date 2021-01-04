@@ -1,5 +1,11 @@
 package gui;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Test;
+
 import board.Board;
 import board.Square;
 import javafx.application.Application;
@@ -11,10 +17,11 @@ import javafx.stage.Stage;
 import pieces.Piece;
 import pieces.PieceImages;
 
+import static org.junit.Assert.*;
+
 public class ChessUI extends Application 
 {
-	
-	public static double DIMENSION = 800;
+	public static final double DIMENSION = 800;
 	
 	public static void main(String[] pArgs)
 	{
@@ -22,26 +29,32 @@ public class ChessUI extends Application
 	}
 
 	@Override
-	public void start(Stage pStage)
+	public void start(Stage pStage) throws Exception
 	{
-		pStage.setTitle("Chess");
-		
-		final GridPane boardView = new GridPane();
-		boardView.setStyle("-fx-background-color: blue;");
-		boardView.setHgap(10);
-		boardView.setVgap(10);
-		boardView.setPadding(new Insets(10));
-		
-		Board model = Board.instance();
-		
-		for ( Square square : model )
-		{
-			boardView.add(square.getView(), square.getCoords()[0], square.getCoords()[1]);
+		try {
+			pStage.setTitle("Chess");
+			
+			final GridPane root = new GridPane();
+			root.setStyle("-fx-background-color: red;");
+			root.setHgap(10);
+			root.setVgap(10);
+			root.setPadding(new Insets(10));
+			
+			Board model = new Board();
+			
+			for ( Square square : model )
+			{
+				root.add(square.getView(), model.getCoordsOfSquare(square)[0], model.getCoordsOfSquare(square)[1]);
+			}
+			
+			pStage.setResizable(false);
+			pStage.setScene(new Scene(root, DIMENSION, DIMENSION));
+			pStage.show();
 		}
-		
-		pStage.setResizable(false);
-		pStage.setScene(new Scene(boardView, DIMENSION, DIMENSION));
-		pStage.show();
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
 	}
 
 	private static void setPiecesOnAction()
@@ -50,6 +63,17 @@ public class ChessUI extends Application
 		{
 //			piece.getPieceView().setOnAction(new MovePieceHandler(piece.getPieceView()));
 		}
+	}
+	
+	private static List<HBox> setup(Board pBoard)
+	{
+		List<HBox> toReturn = new ArrayList<>();
+		for ( int i = 0 ; i < 8 ; i++ )
+		{
+			toReturn.add(new HBox());
+			toReturn.get(i).getChildren().addAll(pBoard.getGridObserver().get(i));
+		}
+		return toReturn;
 	}
 	
 }

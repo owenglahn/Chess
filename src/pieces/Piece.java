@@ -125,10 +125,10 @@ public abstract class Piece {
 		
 	}
 	
-	protected boolean isValidMove(Square pSquare)
+	protected boolean isValidMove(Board pBoard, Square pSquare)
 	{
 //		if (pSquare.isOccupied() && pSquare.getPiece().getColor() == aColor) return false; 
-		return (pSquare.getCoords()[0] != aCoords[0] && pSquare.getCoords()[1] != aCoords[1]);
+		return pBoard.getCoordsOfSquare(pSquare) != aCoords;
 	}
 	
 	public String getIDString()
@@ -139,5 +139,12 @@ public abstract class Piece {
 	public boolean colorEquals(Piece pPiece)
 	{
 		return getColor().equals(pPiece.getColor());
+	}
+	
+	public static void main(String[] args )
+	{
+		int[] a1 = {1, 2};
+		int[] a2 = {1, 2};
+		System.out.println(a1 == a2);
 	}
 }

@@ -1,8 +1,8 @@
 package gui;
 
 import board.*;
+import pieces.Color;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Rectangle;
 
 public class SquareView extends StackPane {
 	
@@ -10,10 +10,16 @@ public class SquareView extends StackPane {
 	
 	private static final int DIMENSION = 20;
 	
-	public SquareView(Square pSquare, double pX, double pY) 
+	public SquareView(Square pSquare) 
 	{
-		super();
 		aSquare = pSquare;
+		this.setPrefSize(DIMENSION/8, DIMENSION/8);
+		if ( aSquare.getColor().equals(Color.BLACK) ) {
+			this.setStyle("-fx-background-color: black;");
+		}
+		else {
+			this.setStyle("-fx-background-color: white;");
+		}
 	}
 	
 	public void pieceEntered()
