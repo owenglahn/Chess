@@ -16,8 +16,9 @@ public class Rook extends Piece
 	}
 
 	@Override
-	protected boolean isValidMove(Square pSquare) {
-		if (!super.isValidMove(pSquare))return false;
-		return pSquare.getCoords()[0] - super.aCoords[0] == 0 || pSquare.getCoords()[1] - super.aCoords[1] == 0;
+	protected boolean isValidMove(Board pBoard, Square pSquare) {
+		if (!super.isValidMove(pBoard, pSquare))return false;
+		return pBoard.getCoordsOfSquare(pSquare)[0] - super.aCoords[0] == 0 || 
+				pBoard.getCoordsOfSquare(pSquare)[1] - super.aCoords[1] == 0;
 	}
 }

@@ -3,7 +3,6 @@ package board;
 import java.util.*;
 
 import gui.BoardObserver;
-import gui.SquareView;
 import pieces.Color;
 
 /*
@@ -11,22 +10,26 @@ import pieces.Color;
  * 
  * Implements SINGLETON design pattern
  */
-public class Board /*implements Iterable<Square>*/ {
+public class Board implements Iterable<Square> {
 
-	private final List<List<Square>> aGrid = new ArrayList<>();
+	private final List<List<Square>> aGrid;
 	private final BoardObserver aObserver = new BoardObserver(this);
 	
-	private static final Board BOARD = new Board(); // singleton
-
-	private Board() {
-		for ( int i = 0 ; i < 8 ; i ++ )
+	private final static Board BOARD = new Board();
+	
+	private Board() 
+	{
+		aGrid = new ArrayList<>();
+		for (int i = 0 ; i < 8 ; i ++ )
 		{
-			aGrid.add(new ArrayList<Square>());
-			for ( int j = 0 ; j < 8 ; j++ )
+			aGrid.add(new ArrayList<>());
+			for ( int j = 0 ; j < 8 ; j ++ )
 			{
-				aGrid.get(i).add(new Square(Color.values()[(i + j) % 2]));
+				Square current = new Square(Color.values()[(i + j) % 2]);
+				aGrid.get(i).add(current);
 			}
 		}
+		aObserver.boardInitialized();
 	}
 	
 	public static Board instance()
@@ -34,23 +37,23 @@ public class Board /*implements Iterable<Square>*/ {
 		return BOARD;
 	}
 	
-//	public List<List<Square>> getGrid()
-//	{
-//		return Collections.unmodifiableList(aGrid);
-//	}
-	
-	public List<List<SquareView>> getGridObserver()
+	public BoardObserver getObserver()
 	{
-		List<List<SquareView>> toReturn = new ArrayList<>();
-		for ( int i = 0 ; i < 8 ; i ++ )
-		{
-			toReturn.add(new ArrayList<SquareView>());
-			for ( int j = 0 ; j < 8 ; j++ )
-			{
-				toReturn.get(i).add(aGrid.get(i).get(j).getView());
-			}
-		}
-		return toReturn;
+		return aObserver;
+	}
+	
+	public List<List<Square>> getGrid()
+	{
+		return aGrid;
+	}
+	
+	/*
+	 * @pre 0 <= pRow < 8, 0 <= pCol < 8
+	 */
+	public Square getSquare(int pRow, int pCol)
+	{
+		assert pRow < aGrid.size() && pRow >= 0 && pCol < aGrid.get(0).size() && pCol >= 0;
+		return aGrid.get(pRow).get(pCol);
 	}
 	
 	/*
@@ -86,28 +89,27 @@ public class Board /*implements Iterable<Square>*/ {
 		return toReturn;
 	}
 
-//	@Override
-//	public Iterator<Square> iterator() {
-//		// TODO Auto-generated method stub
-//		return new BoardIterator();
-//	}
-//	
-//	private static class BoardIterator implements Iterator<Square>
-//	{
-//		private Iterator<Square[]> aRow = Arrays.asList(BOARD.aGrid).iterator();
-//		private Iterator<Square> aColumn = Arrays.asList(BOARD.aGrid[0]).iterator();
-//		
-//		@Override
-//		public boolean hasNext() {
-//			if (!aColumn.hasNext()) return aRow.hasNext();
-//			return aColumn.hasNext();
-//		}
-//
-//		@Override
-//		public Square next() {
-//			if (aColumn.hasNext()) return aColumn.next();
-//			if (aRow.hasNext()) aColumn = Arrays.asList(aRow.next()).iterator();
-//			return aColumn.next();
-//		}
-//	}
+	@Override
+	public Iterator<Square> iterator() {
+		return new BoardIterator();
+	}
+	
+	private class BoardIterator implements Iterator<Square>
+	{
+		private Iterator<List<Square>> aRow = aGrid.iterator();
+		private Iterator<Square> aColumn = aGrid.get(0).iterator();
+		
+		@Override
+		public boolean hasNext() {
+			if (!aColumn.hasNext()) return aRow.hasNext();
+			return aColumn.hasNext();
+		}
+
+		@Override
+		public Square next() {
+			if (aColumn.hasNext()) return aColumn.next();
+			if (aRow.hasNext()) aColumn = aRow.next().iterator();
+			return aColumn.next();
+		}
+	}
 }

@@ -11,17 +11,19 @@ public class Square {
 
 	private final Color aColor;
 	private Optional<Piece> aPiece = Optional.empty();
-	private final SquareView aObserver = new SquareView(this);
+	private final SquareView aObserver;
 	
 	public Square(Color pColor, Piece pPiece)
 	{
 		aPiece = Optional.ofNullable(pPiece);
 		aColor = pColor;
+		aObserver = new SquareView(this);
 	}
 	
 	public Square( Color pColor)
 	{
 		aColor = pColor;
+		aObserver = new SquareView(this);
 	}
 	
 	public Color getColor()

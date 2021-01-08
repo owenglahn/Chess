@@ -8,23 +8,23 @@ public class SquareView extends StackPane {
 	
 	private Square aSquare;
 	
-	private static final int DIMENSION = 20;
+	private static final int DIMENSION = ChessUI.DIMENSION/8;
 	
 	public SquareView(Square pSquare) 
 	{
 		aSquare = pSquare;
-		this.setPrefSize(DIMENSION/8, DIMENSION/8);
-		if ( aSquare.getColor().equals(Color.BLACK) ) {
-			this.setStyle("-fx-background-color: black;");
-		}
-		else {
-			this.setStyle("-fx-background-color: white;");
-		}
+		this.setPrefSize(DIMENSION, DIMENSION);
+		this.setStyle(this.getColorCSS());
 	}
 	
 	public void pieceEntered()
 	{
 		getChildren().add(aSquare.getPieceView());
+	}
+	
+	public String getColorCSS()
+	{
+		return aSquare.getColor().getColorCSS();
 	}
 	
 	public void pieceLeft()
